@@ -46,12 +46,15 @@ void setColor(struct RGBStrip& strip, char hex[3]){
   strip.blue = hex[2];
 }
 
-// Process serial command
-void processSerial(char command){
-  for(int i = 0; i < 3; i++){
+// Attempts to read n bytes from the serila buffer
+void serialReadBytes(n){
+  for(int i = 0; i < n; i++){
     buf[i] = Serial.read();
   }
-  
+}
+
+// Process serial command
+void processSerial(char command){
   switch (command){
     default:
       break;
@@ -74,20 +77,22 @@ void writeValues(){
   analogWrite(bedBluePin, bed.blue);
 }
 
+char b;
 void setup() {
   Serial.begin(serialRate);
   // Reload the previous lighting state
-  
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
-  writeValues();
-  char hex[3] = {0x1a,0xe3,0x2f};
-  setColor(sign,hex);
-  // Process Serial Command
   if(Serial.available() > 0){
-    char firstByte = Serial.read();
-    Serial.print(firstByte);
-    //processSerial(firstByte);
+    b = Serial.read();
+    if(b == 0xb){
+      digitalWrite(LED_BUILTIN,HIGH);
+    } else if (b == 0xa){
+      digitalWrite(LED_BUILTIN,LOW);
+    }
   }
 }
+
+
