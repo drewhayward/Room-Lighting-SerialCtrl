@@ -4,8 +4,8 @@ int serialRate = 9600;
 char buf[24];
 
 /* Colors */
-char[3] white = {255,255,255};
-char[3] off = {0,0,0};
+char white[3] = {255,255,255};
+char off[3] = {0,0,0};
 
 /* Relay Pins */
 int christmasPin = 22;
@@ -50,22 +50,29 @@ void setColor(struct RGBStrip& strip, char hex[3]){
   strip.blue = hex[2];
 }
 
+// Sets the given light to the state
 void setLight(char light, bool state){
+  Serial.println("setLight()");
+  Serial.println(light);
   switch (light) {
     // Christmas Lights
     case 0x01:
+      Serial.println("Christmas");
       christmasLightsOn = state;
       break;
     // Standing lamp
     case 0x02:
+      Serial.println("Standing Lamp");
       standingLampOn = state;
       break;
     // Desk lamp
     case 0x03:
+      Serial.println("Desk Lamp");
       deskLampOn = state;
       break;
     // Sign
     case 0x11:
+      Serial.println("Sign");
       if(state){
         setColor(sign, white);
       } else {
@@ -74,6 +81,7 @@ void setLight(char light, bool state){
       break;
     // Closet
     case 0x12:
+      Serial.println("Closet");
       if(state){
         setColor(closet, white);
       } else {
@@ -81,6 +89,8 @@ void setLight(char light, bool state){
       }
       break;
     // Bed
+    case 0x13:
+      Serial.println("Bed");
       if(state){
         setColor(bed, white);
       } else {
@@ -88,18 +98,22 @@ void setLight(char light, bool state){
       }
       break;
     // Kill all
-    case 0xff:
+    // case 0xff:
   }
 }
+
 // Attempts to read n bytes from the serila buffer
-void serialReadBytes(n){
+void serialReadBytes(int n){
+  Serial.println("serialReadBytes");
   for(int i = 0; i < n; i++){
     buf[i] = Serial.read();
+    Serial.println("Got item");
   }
 }
 
 // Process serial command
 void processSerial(char command){
+  Serial.println("processSerial()");
   switch (command){
     // Breathe LEDS
     // Fade LEDS
@@ -108,9 +122,17 @@ void processSerial(char command){
     // Turn off light
     case 0x00:
       serialReadBytes(1);
-      turnOff(b[1]);
+      setLight(buf[0], false);
       break;
     // Turn on light
+    case 0x01:
+      serialReadBytes(1);
+      setLight(buf[0], true);
+      break;
+    // Set LED color
+    case 0x21:
+      Serial.println("testing switch");
+      break;
     default:
       break;
   }
@@ -137,20 +159,40 @@ void writeValues(){
   digitalWrite(deskLampPin, deskLampOn);
 }
 
-char b;
 void setup() {
   Serial.begin(serialRate);
-  // Reload the previous lighting state
-  pinMode(LED_BUILTIN, OUTPUT);
+
+  // Pin init
+  pinMode(christmasPin,OUTPUT);
+  pinMode(deskLampPin, OUTPUT);
+  pinMode(standingLampPin, OUTPUT);
+  pinMode(signRedPin, OUTPUT);
+  pinMode(signBluePin, OUTPUT); 
+  pinMode(signGreenPin, OUTPUT);
+  pinMode(closetRedPin,OUTPUT);
+  pinMode(closetBluePin, OUTPUT);
+  pinMode(closetGreenPin, OUTPUT);
+  pinMode(bedRedPin, OUTPUT);
+  pinMode(bedGreenPin, OUTPUT);
+  pinMode(bedBluePin,OUTPUT);
+
+  // Load last config
 }
+
+char  b;
 
 void loop() {
   if(Serial.available() > 0){
+    delay(5);
+    Serial.println("Command");
     b = Serial.read();
-    if(b == 0xb){
-      digitalWrite(LED_BUILTIN,HIGH);
-    } else if (b == 0xa){
-      digitalWrite(LED_BUILTIN,LOW);
+    if(b == 0x111){
+      Serial.println(b, DEC);
     }
+    processSerial(b);
   }
+  
+//  char test[3] = {9,145,139};
+//  setColor(sign,test);
+  writeValues();
 }
