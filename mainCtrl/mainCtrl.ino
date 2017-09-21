@@ -8,9 +8,9 @@ char white[3] = {255,255,255};
 char off[3] = {0,0,0};
 
 /* Relay Pins */
-int christmasPin = LED_BUILTIN;
+int christmasPin = 24;
 int deskLampPin = 23;
-int standingLampPin = 24;
+int standingLampPin = 22;
 
 /* RGB Pins */
 // Sign pins
@@ -127,7 +127,14 @@ void setLight(char light, bool state){
       }
       break;
     // Kill all
-    // case 0xff:
+    case 0xff:
+      setColor(bed, off);
+      setColor(sign, off);
+      setColor(closet, off);
+      deskLampOn = false;
+      christmasLightsOn = false;
+      standingLampOn = false;
+      break;
   }
 }
 
@@ -183,9 +190,9 @@ void writeValues(){
   analogWrite(bedBluePin, bed.blue);
 
   // Set outlet relay
-  digitalWrite(christmasPin, christmasLightsOn);
-  digitalWrite(standingLampPin, standingLampOn);
-  digitalWrite(deskLampPin, deskLampOn);
+  digitalWrite(christmasPin, !christmasLightsOn);
+  digitalWrite(standingLampPin, !standingLampOn);
+  digitalWrite(deskLampPin, !deskLampOn);
 }
 
 void setup() {
