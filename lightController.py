@@ -1,4 +1,4 @@
-#import serial
+import serial
 
 class LightController:
     def __init__(self):
@@ -8,10 +8,10 @@ class LightController:
         # Reads local files for serial command mapping
         _getLightMap()
         _getCommandMap()
-        #self.ser = serial.Serial()
-        #self.ser.baudrate = 9600
-        #self.ser.port = '/dev/ttyACM0'
-        #self.ser.port.open()
+        self.ser = serial.Serial()
+        self.ser.baudrate = 9600
+        self.ser.port = '/dev/ttyACM0'
+        self.ser.port.open()
 
     def setLightState(self, light, state):
         # Build serial command from arguments
