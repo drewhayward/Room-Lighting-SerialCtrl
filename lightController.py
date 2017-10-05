@@ -6,8 +6,8 @@ class LightController:
         self.commandmap = dict()
 
         # Reads local files for serial command mapping
-        _getLightMap()
-        _getCommandMap()
+        self._getLightMap()
+        self._getCommandMap()
         self.ser = serial.Serial()
         self.ser.baudrate = 9600
         self.ser.port = '/dev/ttyACM0'
