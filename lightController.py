@@ -11,16 +11,16 @@ class LightController:
         self.ser = serial.Serial()
         self.ser.baudrate = 9600
         self.ser.port = '/dev/ttyACM0'
-        self.ser.port.open()
+        self.ser.open()
 
     def setLightState(self, light, state):
         # Build serial command from arguments
         hexString = ""
         if(state):
-            hexString += commandmap('on')
+            hexString += self.commandmap['on']
         else:
-            hexString += commandmap('off')
-        hexString += lightmap[light]
+            hexString += self.commandmap['off']
+        hexString += self.lightmap[light]
 
         # Cast hex to bytes and send command
         command = bytes.fromhex(hexString)
@@ -29,8 +29,8 @@ class LightController:
     def setStripColor(self, strip, color):
         # Build serial command from arguments
         hexString = ""
-        hexString += commandmap['color']
-        hexString += lightmap[strip]
+        hexString += self.commandmap['color']
+        hexString += self.lightmap[strip]
         hexString += color.strip('# \t\n')
 
         # Cast hex to bytes and send command
