@@ -16,12 +16,18 @@ class LightController:
 
     def fadeStrip(self,strip):
         for i in range (256):
-            levelCommand = bytes.fromhex(self.commandmap[strip])
+            hexString = ""
+            hexString += self.commandmap['color']
+            hexString += self.lightmap[strip]
+
+            levelCommand = bytearray.fromhex(hexString)
             level = i.to_bytes(1, byteorder='big')
 
-            levelCommand.append(level)
-            levelCommand.append(level)
-            levelCommand.append(level)
+            levelCommand.join(level)
+            levelCommand.join(level)
+            levelCommand.join(level)
+            self.ser.write(levelCommand)
+            sleep(.05)
 
     def setLightState(self, light, state):
         # Build serial command from arguments
