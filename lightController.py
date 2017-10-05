@@ -1,3 +1,4 @@
+from time import sleep
 import serial
 
 class LightController:
@@ -12,6 +13,15 @@ class LightController:
         self.ser.baudrate = 9600
         self.ser.port = '/dev/ttyACM0'
         self.ser.open()
+
+    def fadeStrip(self,strip):
+        for i in range (256):
+            levelCommand = bytes.fromhex(self.commandmap[strip])
+            level = i.to_bytes(1, byteorder='big')
+
+            levelCommand.append(level)
+            levelCommand.append(level)
+            levelCommand.append(level)
 
     def setLightState(self, light, state):
         # Build serial command from arguments
