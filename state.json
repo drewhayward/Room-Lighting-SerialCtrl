@@ -1,0 +1,12 @@
+{
+    "lights": {
+        "christmas": 1, 
+        "desk": 1, 
+        "standing": 0
+    }, 
+    "strips": {
+        "bedStrip": "ffffff", 
+        "closetStrip": "ffffff", 
+        "signStrip": "ffffff"
+    }
+}

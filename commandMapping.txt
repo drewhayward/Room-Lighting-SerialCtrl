@@ -1,5 +1,5 @@
-off: 0x00
-on: 0x01
-color: 0x02
-fade: 0x03
-breathe: 0x04
+off: 00
+on: 01
+color: 02
+fade: 03
+breathe: 04
