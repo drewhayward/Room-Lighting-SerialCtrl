@@ -1,0 +1,10 @@
+.row {
+  padding:10px
+}
+
+.panel {
+  border-style:solid;
+  border-radius: 6px;
+  border-width: 0.5px;
+  border-color: #777777;
+}
