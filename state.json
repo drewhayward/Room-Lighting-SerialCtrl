@@ -5,8 +5,8 @@
         "standing": 0
     }, 
     "strips": {
-        "bedStrip": "ffffff", 
-        "closetStrip": "ffffff", 
-        "signStrip": "ffffff"
+        "bed": "ffffff", 
+        "closet": "ffffff", 
+        "sign": "ffffff"
     }
 }

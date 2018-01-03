@@ -1,6 +1,3 @@
 christmas:01
 standing:02
 desk:03
-signStrip:11
-closetStrip:12
-bedStrip:13

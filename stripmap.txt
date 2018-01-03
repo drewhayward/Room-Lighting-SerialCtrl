@@ -1,0 +1,3 @@
+sign:11
+closet:12
+bed:13

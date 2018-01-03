@@ -5,10 +5,12 @@ import json
 class LightController:
     def __init__(self):
         self.lightmap = dict()
+        self.stripmap = dict()
         self.commandmap = dict()
 
         # Reads local files for serial command mapping
         self._getLightMap()
+        self._getStripMap()
         self._getCommandMap()
 
         # Load saved light states
@@ -59,6 +61,7 @@ class LightController:
 
         # Cast hex to bytes and send command
         command = bytearray.fromhex(hexString)
+        print("Writing " + str(state) + " to " + str(light))
         try:
             self.ser.write(command)
         except:
@@ -74,12 +77,12 @@ class LightController:
         # Build serial command from arguments
         hexString = ""
         hexString += self.commandmap['color']
-        hexString += self.lightmap[strip]
+        hexString += self.stripmap[strip]
         hexString += color.strip('# \t\n')
 
         # Cast hex to bytes and send command
         command = bytearray.fromhex(hexString)
-        print(command)
+        print("Writing " + str(color) + " to " + str(strip))
         try:
             self.ser.write(command)
         except:
@@ -95,6 +98,15 @@ class LightController:
         for light, state in self.state['lights'].items():
             self.setLightState(light,state)
 
+    # Returns the dict of the current light states
+    def getState(self):
+        return self.state
+
+    def _getStripMap(self):
+        f = open('stripmap.txt','r')
+        for line in f:
+            name, number = line.strip().split(':')
+            self.stripmap[name] = number
 
     def _getLightMap(self):
         f = open('lightmap.txt', 'r')

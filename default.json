@@ -5,8 +5,8 @@
         "desk": 1
     },
     "strips": {
-        "closetStrip": "ffffff",
-        "bedStrip": "ffffff",
-        "signStrip": "ffffff"
+        "closet": "ffffff",
+        "bed": "ffffff",
+        "sign": "ffffff"
     }
 }
